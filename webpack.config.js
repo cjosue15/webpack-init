@@ -2,9 +2,10 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-    mode: 'production',
+    mode: 'development',
     // devtool: 'inline-source-map',
     devtool: 'inline-source-map',
     // performance: {
@@ -14,6 +15,9 @@ module.exports = {
     // },
     optimization: {
         minimizer: [new OptimizeCssAssetsPlugin()],
+    },
+    output: {
+        filename: 'main.[contentHash].js',
     },
     module: {
         rules: [
@@ -54,9 +58,10 @@ module.exports = {
             filename: './index.html',
         }),
         new MiniCssExtractPlugin({
-            filename: '[name].css',
+            filename: '[name].[contentHash].css',
             ignoreOrder: false,
         }),
         new CopyPlugin({ patterns: [{ from: 'src/assets/images', to: 'assets/images' }] }),
+        new CleanWebpackPlugin(),
     ],
 };
